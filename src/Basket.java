@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class Basket {
+public class Basket implements Serializable {
 
     private String[] products;
     private int[] prices;
@@ -30,49 +30,6 @@ public class Basket {
         System.out.println("Итого: " + sumProduct + " руб"); // вывод суммы всех затрат
     }
 
-    public void saveTxt(File textFile) throws FileNotFoundException { //метод сохранения корзины в текстовый файл;
-        try (PrintWriter out = new PrintWriter(textFile)) {
-            for (String s : getProducts()) //продукты
-                out.print(s + " ");
-            out.print("\n"); //чтение по строке
-            for (int i : getPrices()) // цены
-                out.print(i + " ");
-            out.print("\n"); //чтение по строке
-            for (long e : getProductBasket()) // кол-во продуктов
-                out.print(e + " ");
-        }
-    }
-
-    static Basket loadFromTxtFile(File textFile) throws Exception {
-        if (textFile.exists()) {
-            try (BufferedReader in = new BufferedReader(new FileReader(textFile));) {
-
-                String[] products = in.readLine().strip().split(" ");
-
-                String[] pricesStr = in.readLine().strip().split(" ");
-                int[] prices = new int[pricesStr.length];
-
-                for (int i = 0; i < prices.length; i++) {
-                    prices[i] = Integer.parseInt(pricesStr[i]);
-                }
-
-                Basket basket = new Basket(products, prices);
-
-                String[] amountsStr = in.readLine().strip().split(" ");
-
-                for (int i = 0; i < amountsStr.length; i++) {
-                    basket.productBasket[i] = Integer.parseInt(amountsStr[i]);
-                }
-                return basket;
-            }
-        } else {
-            String[] products = {"Хлеб", "Яблоки", "Молоко", "Рыба"};  //товар
-            int[] prices = {60, 120, 50, 250};  //цена
-            Basket basket = new Basket(products, prices);  //в корзину продукты и цену
-            return basket;
-        }
-    }
-
     public String[] getProducts() {
         return products;
     }
@@ -81,7 +38,26 @@ public class Basket {
         return prices;
     }
 
-    public long[] getProductBasket() {
-        return productBasket;
+    public void saveBin(File file) throws Exception { // сохранение файла в бинарном формате.
+        try (FileOutputStream fos = new FileOutputStream(file);
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            oos.writeObject(this);
+        }
+    }
+
+    public static Basket loadFromBinFile(File file) throws Exception { //загрузка корзины из бинарного файла
+        if (file.exists()) { // проверка наличия файла
+            Basket basket = null;
+            try (FileInputStream fis = new FileInputStream(file);
+                 ObjectInputStream ois = new ObjectInputStream(fis)) {
+                basket = (Basket) ois.readObject();
+            }
+            return basket;
+        } else {
+            String[] products = {"Хлеб", "Яблоки", "Молоко", "Рыба"};  //товар
+            int[] prices = {60, 120, 50, 250};  //цена
+            Basket basket = new Basket(products, prices);  //в корзину продукты и цену
+            return basket;
+        }
     }
 }
