@@ -1,16 +1,33 @@
+import org.w3c.dom.Document;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws Exception {
 
-        File textFile = new File("basket.txt");
+
+//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//        DocumentBuilder builder = factory.newDocumentBuilder();
+//        Document doc = builder.parse(new File("shop.xml"));
+
+        File jsonFile = new File("basket.json");
         Basket basket = null;
+        ClientLog clientLog = new ClientLog();
+
+//        try {
+//            basket = Basket.loadFromTxtFile(textFile);
+//        } catch (Exception e) {
+//            System.out.println(e.getMessage());
+//        }
+
         try {
-            basket = Basket.loadFromTxtFile(textFile);
+            basket = Basket.loadFromJson(jsonFile);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
 
         System.out.println("Программа планировщик продуктовой корзины");
         System.out.println("Список возможных товаров для покупки");
@@ -31,11 +48,17 @@ public class Main {
             productNumber = Integer.parseInt(myPrice[0]) - 1; // приведение ввода пользователя к значению массива
             productCount = Integer.parseInt(myPrice[1]); // ввод кол-ва товара пользователем
 
+            clientLog.log(productNumber,productCount);
             basket.addToCart(productNumber, productCount);
+
         }
-        basket.saveTxt(textFile);
+
+        clientLog.exportAsCSV(txtFile);
+        //basket.saveTxt(textFile);
+        basket.saveJson(jsonFile);
 
         basket.printCart();
 
     }
 }
+

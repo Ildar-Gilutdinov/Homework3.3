@@ -1,3 +1,10 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.FileWriter;
+import java.io.IOException;
+
+
 import java.io.*;
 
 public class Basket {
@@ -72,6 +79,30 @@ public class Basket {
             return basket;
         }
     }
+
+    public void saveJson(File jsonFile) throws IOException { // сохранение файла в бинарном формате.
+        try (FileWriter file = new FileWriter(jsonFile,false)) {
+            GsonBuilder builder = new GsonBuilder();
+            Gson gson = builder.create();
+            file.write(gson.toJson(this));
+        }
+    }
+
+    public static Basket loadFromJson(File jsonFile) throws IOException { //загрузка корзины из бинарного файла
+        if (jsonFile.exists()) { // проверка наличия файла
+            try (FileReader fileLoad = new FileReader(jsonFile)) {
+                GsonBuilder builder = new GsonBuilder();
+                Gson gson = builder.create();
+                return gson.fromJson(fileLoad ,Basket.class);
+            }
+        } else {
+            String[] products = {"Хлеб", "Яблоки", "Молоко", "Рыба"};  //товар
+            int[] prices = {60, 120, 50, 250};  //цена
+            Basket basket = new Basket(products, prices);  //в корзину продукты и цену
+            return basket;
+        }
+    }
+
 
     public String[] getProducts() {
         return products;
