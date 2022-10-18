@@ -1,4 +1,5 @@
 import org.w3c.dom.Document;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
@@ -7,10 +8,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws Exception {
 
-
-//        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//        DocumentBuilder builder = factory.newDocumentBuilder();
-//        Document doc = builder.parse(new File("shop.xml"));
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(new File("shop.xml"));
 
         File jsonFile = new File("basket.json");
         Basket basket = null;
@@ -48,12 +48,12 @@ public class Main {
             productNumber = Integer.parseInt(myPrice[0]) - 1; // приведение ввода пользователя к значению массива
             productCount = Integer.parseInt(myPrice[1]); // ввод кол-ва товара пользователем
 
-            clientLog.log(productNumber,productCount);
+            clientLog.log(productNumber + 1, productCount);
             basket.addToCart(productNumber, productCount);
 
         }
 
-        clientLog.exportAsCSV(txtFile);
+        clientLog.exportAsCSV(new File("log.csv"));
         //basket.saveTxt(textFile);
         basket.saveJson(jsonFile);
 

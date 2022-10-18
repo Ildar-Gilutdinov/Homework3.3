@@ -23,7 +23,6 @@ public class ClientLog {
     public void exportAsCSV(File txtFile) throws IOException {
         //метод для сохранения всего журнала действия в файл в формате csv
         try (CSVWriter csvWriter = new CSVWriter(new FileWriter(txtFile, true))) {
-//            csvWriter.writeNext(productsClientLog.toString().split(","));
             csvWriter.writeAll(productsClientLog);
         }
     }

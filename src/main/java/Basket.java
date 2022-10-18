@@ -81,7 +81,7 @@ public class Basket {
     }
 
     public void saveJson(File jsonFile) throws IOException { // сохранение файла в бинарном формате.
-        try (FileWriter file = new FileWriter(jsonFile,false)) {
+        try (FileWriter file = new FileWriter(jsonFile, false)) {
             GsonBuilder builder = new GsonBuilder();
             Gson gson = builder.create();
             file.write(gson.toJson(this));
@@ -93,7 +93,7 @@ public class Basket {
             try (FileReader fileLoad = new FileReader(jsonFile)) {
                 GsonBuilder builder = new GsonBuilder();
                 Gson gson = builder.create();
-                return gson.fromJson(fileLoad ,Basket.class);
+                return gson.fromJson(fileLoad, Basket.class);
             }
         } else {
             String[] products = {"Хлеб", "Яблоки", "Молоко", "Рыба"};  //товар
