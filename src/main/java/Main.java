@@ -21,20 +21,20 @@ public class Main {
         ReadBlock log = new ReadBlock(doc.getElementsByTagName("log").item(0));
 
         Basket basket = null;
-//        File textFile = new File("basket.txt");
-//        File jsonFile = new File("basket.json");
+        File textFile = new File("basket.txt");
+        File jsonFile = new File("basket.json");
 
-//        try {
-//            basket = Basket.loadFromTxtFile(textFile);
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
-//
-//        try {
-//            basket = Basket.loadFromJson(jsonFile);
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
+        try {
+            basket = Basket.loadFromTxtFile(textFile);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            basket = Basket.loadFromJson(jsonFile);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         if (basket == null) {
             String[] products = {"Хлеб", "Яблоки", "Молоко", "Рыба"};  //товар
             int[] prices = {60, 120, 50, 250};  //цена
@@ -82,9 +82,9 @@ public class Main {
             basket.addToCart(productNumber, productCount);
 
         }
-//        basket.saveTxt(textFile);
-//        basket.saveJson(jsonFile);
-//        clientLog.exportAsCSV(new File("log.csv")); //сохраняем журнал действий
+        basket.saveTxt(textFile);
+        basket.saveJson(jsonFile);
+        clientLog.exportAsCSV(new File("log.csv")); //сохраняем журнал действий
 
         if (save.enabled) {
             if (save.format.equals("txt")) {
