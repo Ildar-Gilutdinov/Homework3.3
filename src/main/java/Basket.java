@@ -50,8 +50,8 @@ public class Basket {
         }
     }
 
-    static Basket loadFromTxtFile(File textFile) throws Exception {
-        if (textFile.exists()) {
+    static Basket loadFromTxtFile(File textFile) throws IOException {
+        if (textFile.exists()) { // проверка наличия файла
             try (BufferedReader in = new BufferedReader(new FileReader(textFile));) {
 
                 String[] products = in.readLine().strip().split(" ");
